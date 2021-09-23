@@ -2,7 +2,7 @@ const Contact = require("../models/contact.model");
 
 module.exports = {
     create: async(req, res) => {
-        const { name, email, phone, address, favorite } = req.body;
+        const { name, email, phone, address, favorite, message } = req.body;
         try {
             const contact = new Contact({
                 name,
@@ -10,6 +10,7 @@ module.exports = {
                 phone,
                 address,
                 favorite,
+                message
             });
             await contact.save();
             res.json({
