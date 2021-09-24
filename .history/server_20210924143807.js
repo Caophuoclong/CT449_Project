@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 
 app.use("/contact", require("./routes/contact.route"));
 app.use((req, res, next) => {
-    next(new Error("Resource not found"));
+    next(new Error("Resource123 not found"));
 })
 app.use((err, req, res, next) => {
     res.status(404).json({ message: err.message });

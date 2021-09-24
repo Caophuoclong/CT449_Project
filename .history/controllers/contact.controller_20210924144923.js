@@ -51,12 +51,12 @@ module.exports = {
         });
     },
     update: async(req, res) => {
-        const { name, email, phone, favorite } = req.body;
+        const { name, email, phone, message } = req.body;
         const contact = await Contact.findOneAndUpdate({ phone: req.params.phone }, {
             name,
             email,
             phone,
-            favorite
+            message
         });
         res.json({
             status: "success",
