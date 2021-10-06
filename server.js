@@ -22,16 +22,18 @@ const corsOption = {
 const mongooseOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
 }
+mongoose.connect(mongooseUri, mongooseOptions).then(() => {
+    console.log("MongoDB Connected");
+});
 
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/auth", require("./routes/auth.route"));
 app.use(middleware.authorization);
-app.use("/api", require("./routes/api.route"));
+// app.use("/api", require("./routes/api.route"));
+// app.use("/user",require("./routes/user.route"));
 
 
 
@@ -40,6 +42,7 @@ app.use(function (req,res,next){
 })
 app.use(function (error, req, res, next) {
     res.status(error.statusCode || 500);
+    console.log(error);
     res.json({
         error: {
             message: error.message
