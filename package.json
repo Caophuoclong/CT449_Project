@@ -1,0 +1,32 @@
+{
+  "name": "todoproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caophuoclong/CT449_Project.git"
+  },
+  "author": "phuoclong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Caophuoclong/CT449_Project/issues"
+  },
+  "homepage": "https://github.com/Caophuoclong/CT449_Project#readme",
+  "dependencies": {
+    "casual": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.9"
+  },
+  "devDependencies": {
+    "jest": "^27.2.4",
+    "supertest": "^6.1.6"
+  }
+}
