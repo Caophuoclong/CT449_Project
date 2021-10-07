@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
+    "moment": "^2.29.1",
     "vue": "^3.2.16",
     "vue-axios": "^3.3.7"
   },
