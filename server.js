@@ -13,7 +13,7 @@ const PORT = config.app.port;
 // please change uri to your localhost
 const mongooseUriAtlas = `mongodb+srv://${config.db.username}:${config.db.password}@cluster0.fyage.mongodb.net/${config.db.database}?retryWrites=true&w=majority`
 // username look like host, password look like port
-const mongooseUriLocal = `mongodb://${config.db.username}:${config.db.password}/${config.db.database}`
+const mongooseUriLocal = `mongodb://${config.db.username}:${config.db.password}@localhost:27017/${config.db.database}`
 const mongoUrl = process.env.NODE_ENV === "production" ? mongooseUriLocal : mongooseUriAtlas;
 mongoose.connect(mongoUrl, config.db.options).then(() => {
     console.log("MongoDB Connected");

@@ -14,7 +14,7 @@ services:
     ports:
       - "8080:5000"
   db:
-    image: mongodb
+    image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=phuoclong
       - MONGO_INITDB_ROOT_PASSWORD=5164895134
