@@ -4,7 +4,6 @@ const HandleError = require('../handleError');
 module.exports = {
     createTask: async(req,res,next)=>{
         const {id} = req.user;
-        console.log(req.user)
         const data = {...req.body, owner: id};
         const response = await Task.create(data);
         if(response.status === 200){

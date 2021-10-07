@@ -3,7 +3,7 @@ const apiController = require('../controllers/api.controller');
 const taskRoute = require("./task/task.api")
 router.get("/",(req,res)=>{
     return res.json({
-        message:"Welcome to the API"
+        message:"Welcome to the /api"
     });
 })
 router.use("/task",taskRoute)

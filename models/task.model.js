@@ -15,6 +15,16 @@ const schema = new Schema({
     endAt : {
         type: Date,
     },
+    level:{
+        type: String,
+        enum: ['low', 'medium', 'high'],
+        default: 'low',
+    },
+    status:{
+        // complete or none
+        type: Boolean,
+        default: false,
+    },
     owner: {
         type: Schema.Types.ObjectId,
         index: true,
@@ -54,7 +64,9 @@ const taskFn = {
             const response = await taskModel.findOneAndUpdate({_id: data.id, owner: data.owner}, {
                 title: data.title,
                 content: data.content,
-                endAt: data.endAt
+                endAt: data.endAt,
+                level: data.level,
+                status: data.status,
             },{
                 new: true,
             });
@@ -70,7 +82,6 @@ const taskFn = {
     delete: async function(data){
         try{
             const response = await taskModel.findOneAndDelete({_id: data.id, owner: data.owner});
-            console.log(response);
            if(response === null){
                 return {status: 404, message: "Not found task!"};
            }else{

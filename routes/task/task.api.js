@@ -2,7 +2,7 @@ const route = require("express").Router();
 const taskController = require("../../controllers/task.controller");
 
 route.get("/",(req,res)=>{
-    res.status(200).send("Welcome to task api");
+    res.status(200).json({message: "Welcome to /api/task"});
 })
 
 route.post("/create",taskController.createTask);
