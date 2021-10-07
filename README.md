@@ -7,8 +7,10 @@
 # Note
 - Create file **.env** to store variable envrioments include:
     + SERECT_KEY: This is a signature to validate token
-    + DATABASE_URI: This is uri of database mongodb, you can you mongo atlas or mongodb in local
-
+    + DB_USERNAME: Username database
+    + DB_PASSWORD: Password database
+    + DB_NAME: Name database
+    
 
 # Auth
 | Url 	|Method| Parameter 	| Response 	|

@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const { encrypt } = require("../scripts/hashPassword");
-require("dotenv").config();
+const config = require("../config");
 const casual = require("casual");
-const SignToken = require("../scripts/endCode");
-const moment = require("moment");
+const {SignToken, SignRefreshToken} = require("../scripts/endCode");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -49,8 +48,10 @@ const userFn = {
       const check = encrypt(password, User.salt);
       if (check === User.password) {
         const payload = {id: User._id, username: User.username, email: User.email} 
+        const payloadRefresh = {id: User._id, status: "refresh"};
         return { status: 200, data: {
-          token: SignToken(payload)
+          token: SignToken(payload),
+          refreshToken: SignRefreshToken(payloadRefresh)
         }  
       };
       }else {
@@ -103,12 +104,20 @@ const userFn = {
       return { status: 403, message: "User not found!" };
     }
   },
+  getUserById: async (id) => {
+    const User = await user.findById(id);
+    if (User) {
+      const { _id, username, email} = User;
+      const newUser = {id: _id, username, email};
+      return { status: 200, token: SignToken(newUser) };
+    } else {
+      return { status: 403, message: "User not found!" };
+    }
+  },
   changePassword: async (data) => {
     const { username, oldPassword, newPassword } = data;
     const User = await user.findOne({ username });
     if (User) {
-      console.log(User.salt);
-      console.log(oldPassword);
       const check = encrypt(oldPassword, User.salt);
       console.log(check);
       if (check === User.password) {

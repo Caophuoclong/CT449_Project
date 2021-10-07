@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --detectOpenHandles",
+    "dev": "nodemon server.js",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -26,6 +27,7 @@
   "dependencies": {
     "casual": "^1.6.2",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
