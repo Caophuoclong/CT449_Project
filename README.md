@@ -9,6 +9,8 @@
 |------|-----------|---------|
 ||||
 # USER
-| **Url** | **Parameter** | **Response**|
-|------|-----------|---------|
-||||
+| Url 	| Parameter 	| Response 	|
+|:---:	|:---:	|:---:	|
+| /user/:username/changepassword 	| params: {username}<br>body: {oldpassword, newpassword} 	| success:{status: 200, "Password change successfully! " + message} <br>failure: {status: 403, message} 	|
+| /user/:username/update 	| params: {username}<br>body: {email, firstname, lastname, dob, phone} 	| success:{status: 200, data}, <br>failure: {status: 403, message: "User is incorrect format!"} 	|
+| /user/:username 	| params: {username} 	| success: {status: 200, data: newUser},<br>failure: {status: 403, message: "User not found!"} 	|

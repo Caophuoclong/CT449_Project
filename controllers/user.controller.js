@@ -32,7 +32,7 @@ module.exports = {
         if(response.status === 200){
             res.json(response.data);
         }else{
-            next(new HandleError(response.error, response.status));
+            next(new HandleError(response.message, response.status));
         }
     }
 }

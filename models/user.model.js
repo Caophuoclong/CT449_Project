@@ -100,7 +100,7 @@ const userFn = {
       const newUser = {_id, username, email, profile};
       return { status: 200, data: newUser };
     } else {
-      return { status: 403, error: "User not found!" };
+      return { status: 403, message: "User not found!" };
     }
   },
   changePassword: async (data) => {
