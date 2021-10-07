@@ -1,3 +1,15 @@
+# Installation
+1. Clone project to your local
+2. Change directory to projec t
+3. **npm install** to install dependencies
+4. **npm start** to start this app.
+
+# Note
+- Create file **.env** to store variable envrioments include:
+    + SERECT_KEY: This is a signature to validate token
+    + DATABASE_URI: This is uri of database mongodb, you can you mongo atlas or mongodb in local
+
+
 # Auth
 | Url 	|Method| Parameter 	| Response 	|
 |:---	|:---	|:--- |:---	|
