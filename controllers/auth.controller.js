@@ -8,7 +8,7 @@ module.exports = {
         if(response.status === 200){
             res.json(response.data);
         }else{
-            next(new HandleError(response.data.message, response.status));
+            next(new HandleError(response.message, response.status));
         }
 
     },
@@ -19,7 +19,7 @@ module.exports = {
         if(response.status === 200){
             res.json(response.data);
         }else{
-            next(new HandleError(response.data.message, response.status));
+            next(new HandleError(response.message, response.status));
         }
     },
     resetPassword: async (req, res) => {

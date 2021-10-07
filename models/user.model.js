@@ -3,6 +3,7 @@ const { encrypt } = require("../scripts/hashPassword");
 require("dotenv").config();
 const casual = require("casual");
 const SignToken = require("../scripts/endCode");
+const moment = require("moment");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -53,14 +54,14 @@ const userFn = {
         }  
       };
       }else {
-        return { status: 403, data:{
+        return { status: 403, 
           message: "Error login!"
-        } };
+        };
       }
     } else {
-      return { status: 403, data:{
+      return { status: 403, 
         message: "Error login!" 
-      }};
+      };
     }
   },
   signUp: async (data) => {
@@ -78,17 +79,13 @@ const userFn = {
       await newUser.save();
     return {
       status: 200,
-      data: {
         message: "Please return sign in page!"
-      }
     }
     }catch(error){
       if(error.code === 11000){
         return {
           status: 403,
-          data:{
             message: "User already exists!"
-          }
         }
       }
       return { status: 403, data:{
@@ -99,7 +96,9 @@ const userFn = {
   getUser: async (username) => {
     const User = await user.findOne({ username });
     if (User) {
-      return { status: 200, data: User };
+      const { _id, username, email, profile, firstName, lastName } = User;
+      const newUser = {_id, username, email, profile};
+      return { status: 200, data: newUser };
     } else {
       return { status: 403, error: "User not found!" };
     }
@@ -108,39 +107,46 @@ const userFn = {
     const { username, oldPassword, newPassword } = data;
     const User = await user.findOne({ username });
     if (User) {
+      console.log(User.salt);
+      console.log(oldPassword);
       const check = encrypt(oldPassword, User.salt);
+      console.log(check);
       if (check === User.password) {
         const salt = casual.uuid;
         const hash = encrypt(newPassword, salt);
         await user.updateOne({ username }, { password: hash, salt });
-        return { status: 200, data: {
+        return { status: 200, 
           message: "Please login again!"
-        } };
+        };
       } else {
         return { status: 403, message: "Wrong password!" };
       }
+    }else{
+      return { status: 403, message: "User not found!" };
     }
   },
-
   updateUser: async (username, data) => {
-    const { password, email, firstname, lastname, phone, dob } = data;
-    const userData = await user.findOneAndUpdate(
-      { username },
-      {
-        password,
-        email,
-        profile: {
-          firstname,
-          lastname,
-          phone,
-          dob,
+    const { email, firstname, lastname, phone, dob } = data;
+    try{
+      const userData = await user.findOneAndUpdate(
+        { username },
+        {
+          email,
+          profile: {
+            firstname,
+            lastname,
+            phone,
+            dob,
+          },
         },
-      },
-      {
-        new: true,
-      }
-    );
-    return { status: 200, data: userData };
+        {
+          new: true,
+        }
+      );
+      return { status: 200, data: userData };
+    }catch(error){
+      return { status: 401, error: "Date is incorrect format!"};
+    }
   },
 };
 module.exports = userFn;

@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 const mongooseUri = process.env.MONGODB_URI;
-const SERECT_KEY=process.env.SECRET_KEY;
+// const SERECT_KEY=process.env.SECRET_KEY;
 const corsOption = {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -32,8 +32,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/auth", require("./routes/auth.route"));
 app.use(middleware.authorization);
-// app.use("/api", require("./routes/api.route"));
-// app.use("/user",require("./routes/user.route"));
+app.use("/api", require("./routes/api.route"));
+app.use("/user",require("./routes/user.route"));
 
 
 
@@ -53,3 +53,5 @@ app.use(function (error, req, res, next) {
 server.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
 })
+
+module.exports = app;
