@@ -19,7 +19,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=phuoclong
       - MONGO_INITDB_ROOT_PASSWORD=5164895134
     volumes:
-      - ./data:/data/db
+      - ./data:/usr/src/data/db
     ports:
       - "27017:27017"
     depends_on:
