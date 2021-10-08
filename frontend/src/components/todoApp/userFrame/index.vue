@@ -6,7 +6,7 @@
       class="w-28 h-28 border-2 border-gray-300 rounded-full text-center"
     />
     <div class="break"></div>
-    <div>Phuoc long</div>
+    <div>{{username}}</div>
     </div>
     <div id="calendar" class=" h-80 border-2 border-black absolute bottom-10 right-1/2 transform translate-x-1/2" style="width:95%"></div>
   </div>
@@ -14,6 +14,9 @@
 <script>
 export default {
   name: "UserFrame",
+  props:{
+    username: String,
+  }
 };
 </script>
 <style lang="">
