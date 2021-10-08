@@ -12,7 +12,7 @@ module.exports = {
                     next(new HandleError(err,401));
                 } else {
                     if(decoded.status !== "refresh"){
-                        req.decoded = decoded;
+                        req.user = decoded;
                         next();
                     }else{
                         next(new HandleError("Your token is invalid!",401))
@@ -23,7 +23,7 @@ module.exports = {
 
         }catch(error){
             if(error.expiredAt){
-                res.status(401).json({message: "Token expired!"});
+                res.json({status: 403, message: "Token expired!"});
             }
             next(new HandleError(error,401));
         }

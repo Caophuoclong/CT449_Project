@@ -33,6 +33,12 @@ const schema = new Schema({
       type: Date,
     },
   },
+  tasks:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: "tasks",
+    }
+  ],
   salt: {
     type: String,
   }

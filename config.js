@@ -6,16 +6,16 @@ const config = {
       port: process.env.PORT || 5000,
     },
     db: {
-      username: process.env.DB_USERNAME || "root",
-      password: process.env.DB_PASSWORD || "",
-      database: process.env.DB_NAME || "test",
+      username: process.env.DB_USERNAME || "phuoclong",
+      password: process.env.DB_PASSWORD || "51648951354",
+      database: process.env.DB_NAME || "Todos",
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
     },
     jwt: {
-      serect: process.env.SERECT_KEY,
+      serect: process.env.SERECT_KEY || "2603",
     },
     cors: {
       origin: "*",
