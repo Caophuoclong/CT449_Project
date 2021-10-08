@@ -6,8 +6,8 @@ import TodoApp from "./components/todoApp/index.vue"
 </script>
 
 <template  >
-  <div style="height: 100%">
-    <TodoApp/>
+  <div style="height: 100%" class="relative">
+    <router-view/>
   </div>
 
 </template>
