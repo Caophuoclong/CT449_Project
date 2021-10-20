@@ -1,17 +1,20 @@
 <template lang="">
-  <div class="w-1/2 bg-red-100 overflow-y-auto h-96">
+  <div class="w-1/2 overflow-y-auto h-128">
     <div class="flex justify-center items-center">
-      <span class="text-3xl mx-2">Danh ba</span>
+      <span class="text-3xl m-2">Danh ba</span>
       <font-awesome-icon size="3x" icon="users"></font-awesome-icon>
     </div>
     <div
-      class="text-2xl font-bold m-4 border-2 p-4 border-gray-300 rounded-2xl cursor-pointer active:bg-blue-300 select-none truncate "
+      class="text-2xl font-bold m-4 border-2 p-4 border-gray-300 rounded-2xl cursor-pointer active:bg-blue-300 select-none truncate relative group"
       v-on:click="onClick"
       v-for="(contact, index) in contacts"
       :key="index"
       :id="contact._id"
     >
       {{ contact.name }}
+      <button v-on:click="onDelete" class="hidden group-hover:inline-block float-right mx-2">D</button>
+      <button v-on:click="onFavorite" class="hidden group-hover:inline-block float-right mx-2">F</button>
+      
     </div>
   </div>
 </template>
@@ -34,8 +37,23 @@ export default {
           console.log("asdfasdf");
         event.target.classList.remove("contact-selected");
       }
-      this.$emit("chosseContact",me.id);
+      this.$emit("chooseContact",me.id);
     },
+    onDelete: function (event){
+      const {id} = event.target.parentNode;
+      if(document.getElementsByClassName("contact-selected")[0]){
+        document.getElementsByClassName("contact-selected")[0].classList.remove("contact-selected");
+      }
+      console.log(id);
+      this.$emit("deleteContact",id);
+    },
+    onFavorite: function (event){
+      const {id} = event.target.parentNode;
+      if(document.getElementsByClassName("contact-selected")[0]){
+        document.getElementsByClassName("contact-selected")[0].classList.remove("contact-selected");
+      }
+      this.$emit("favoriteContact",id);
+    }
   },
 };
 </script>
