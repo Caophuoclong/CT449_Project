@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default axios.create({
-    baseURL: "http://localhost:3000/contact/",
+    baseURL: "https://bookcontact.herokuapp.com/contact/",
     headers: {
         "Content-Type": "application/json"
     }
