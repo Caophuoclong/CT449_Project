@@ -43,6 +43,14 @@ module.exports = {
 
         };
     },
+    getById: async (req,res) => {
+        const { id } = req.params;
+        const contact = await Contact.findById(id);
+        res.json({
+            status: "success",
+            data: contact,
+        })
+    },
     getAll: async(req, res) => {
         const contacts = await Contact.find().sort({ create: -1 });
         res.json({
@@ -50,6 +58,7 @@ module.exports = {
             data: contacts
         });
     },
+
     update: async(req, res) => {
         const { name, email, phone, favorite } = req.body;
         const contact = await Contact.findOneAndUpdate({ phone: req.params.phone }, {
