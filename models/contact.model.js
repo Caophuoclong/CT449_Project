@@ -19,7 +19,7 @@ const contactSchema = new Schema({
 
     },
     favorite: {
-        type: String,
+        type: Boolean,
     },
     time: {
         type: Number,
