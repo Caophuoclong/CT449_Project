@@ -12,8 +12,12 @@
       :id="contact._id"
     >
       {{ contact.name }}
-      <button v-on:click="onDelete" class="hidden group-hover:inline-block float-right mx-2">D</button>
-      <button v-on:click="onFavorite" class="hidden group-hover:inline-block float-right mx-2">F</button>
+      <button v-on:click="onDelete" class="hidden group-hover:inline-block float-right mx-2">
+      <font-awesome-icon icon="user-slash"></font-awesome-icon>
+      </button>
+      <button v-on:click="onFavorite" class="hidden group-hover:inline-block float-right mx-2">
+      <font-awesome-icon size="1x" icon="star"></font-awesome-icon>
+      </button>
       
     </div>
   </div>
@@ -23,7 +27,7 @@ export default {
   name: "ContactView",
   props: ["contacts"],
   methods: {
-    onClick: function(event) {
+    onClick: function (event) {
       const me = event.target;
       const contactSelected = document.getElementsByClassName(
         "contact-selected"
@@ -34,25 +38,25 @@ export default {
       if (!me.classList.contains("contact-selected")) {
         event.target.classList.add("contact-selected");
       } else {
-          console.log("asdfasdf");
+        console.log("asdfasdf");
         event.target.classList.remove("contact-selected");
       }
-      this.$emit("chooseContact",me.id);
+      this.$emit("chooseContact", me.id);
     },
-    onDelete: function (event){
-      const {id} = event.target.parentNode;
-      if(document.getElementsByClassName("contact-selected")[0]){
+    onDelete: function (event) {
+      const { id } = event.target.parentNode;
+      if (document.getElementsByClassName("contact-selected")[0]) {
         document.getElementsByClassName("contact-selected")[0].classList.remove("contact-selected");
       }
       console.log(id);
-      this.$emit("deleteContact",id);
+      this.$emit("deleteContact", id);
     },
-    onFavorite: function (event){
-      const {id} = event.target.parentNode;
-      if(document.getElementsByClassName("contact-selected")[0]){
+    onFavorite: function (event) {
+      const { id } = event.target.parentNode;
+      if (document.getElementsByClassName("contact-selected")[0]) {
         document.getElementsByClassName("contact-selected")[0].classList.remove("contact-selected");
       }
-      this.$emit("favoriteContact",id);
+      this.$emit("favoriteContact", id);
     }
   },
 };

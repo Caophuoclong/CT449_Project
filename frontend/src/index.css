@@ -21,3 +21,10 @@ body {
   filter: blur(8px);
   -webkit-filter: blur(8px);
 }
+button > svg{
+  pointer-events: none;
+}
+.break {
+  flex-basis: 100%;
+  height: 0;
+}

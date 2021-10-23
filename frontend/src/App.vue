@@ -5,7 +5,7 @@ import ContactBook from "./components/contactBook.vue"
 </script>
 
 <template>
-  <ContactBook/>
+  <ContactBook />
 </template>
 
 <style>

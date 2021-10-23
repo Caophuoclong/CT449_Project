@@ -1,32 +1,34 @@
 <template>
   <div id="xinchao" class="h-full w-full relative">
-    <FormAdd
-      v-if="isAddContact"
-      @changeStatus="changeStatusAddContact"
-      @addContact="addContact"
-    />
+    <FormAdd v-if="isAddContact" @changeStatus="changeStatusAddContact" @addContact="addContact" />
     <div id="main">
       <SearchBox @xinchao="handleSubmit" />
-      <div class="w-1/2 mx-auto flex justify-center my-16">
-        <ContactView @chooseContact="chooseContact" :contacts="contacts"  @deleteContact="deleteContact" @favoriteContact="handleFavorite"/>
-        <DetailContact :contact="contact" />
+      <div class="w-2/3 mx-auto flex justify-center my-16 relative">
+        <ContactView
+          @chooseContact="chooseContact"
+          :contacts="contacts"
+          @deleteContact="deleteContact"
+          @favoriteContact="handleFavorite"
+        />
+        <DetailContact :contact="contact" @updateContact="updateContact" />
+        <button
+          v-if="!isSame"
+          v-on:click="updateInfo"
+          class="absolute right-4 bottom-0 -my-20 text-2xl border border-white p-4 rounded-2xl bg-yellow-400 ring-2 ring-yellow-300 hover:bg-yellow-500 hover:ring-yellow-500"
+        >Cập nhật</button>
       </div>
 
       <div class="my-8 w-1/2 mx-auto">
         <button
-          class="text-2xl w-40 h-12 border border-black rounded-2xl bg-blue-600 text-white mx-4 active:bg-blue-300"
+          class="text-2xl w-max h-12 border border-black rounded-2xl bg-blue-600 text-white mx-4 active:bg-blue-300 px-2"
           v-on:click="changeStatusAddContact"
           id="addContactViewButton"
-        >
-          Thêm liên hệ
-        </button>
+        >Thêm liên hệ</button>
         <button
           class="text-2xl w-40 h-12 border border-black rounded-2xl bg-red-600 text-white active:bg-red-300"
           v-on:click="deleteAll"
           id="deleteContactViewButton"
-        >
-          Xóa tất cả
-        </button>
+        >Xóa tất cả</button>
       </div>
     </div>
   </div>
@@ -50,6 +52,7 @@ export default {
       contacts: [],
       contact: {},
       isAddContact: false,
+      info: {}
     };
   },
   methods: {
@@ -83,23 +86,61 @@ export default {
         document.getElementById(_id).classList.add("contact-selected");
       }
     },
-    async handleFavorite(id){
-        const response = await contactService.favorite(id);
-        this.getData();
-        const res = response.data;
-        this.chooseContact(id);
-        this.$toast.open({
+    async handleFavorite(id) {
+      const response = await contactService.favorite(id);
+      const res = response.data;
+      this.getData();
+      this.chooseContact(id);
+      this.$toast.open({
         message: `${res.message}`,
         type: "success",
         position: "top-right",
         duration: 1000,
       });
     },
-    async deleteContact(id){
-        await contactService.delete(id);
-        this.getData();
-        this.$toast.open({
+    async updateContact(info) {
+      this.info = info;
+    },
+    async deleteContact(id) {
+      await contactService.delete(id);
+      this.getData();
+      this.$toast.open({
         message: "Xóa thành công",
+        type: "success",
+        position: "top-right",
+        duration: 1000,
+      });
+    },
+    async chooseContact(id) {
+      const response = await contactService.getById(id);
+      window.localStorage.setItem("choosing", id);
+      const res = response.data;
+      this.contact = res.data;
+      if (
+        document.getElementsByClassName("contact-selected")[0] !== undefined
+      ) {
+        document
+          .getElementsByClassName("contact-selected")[0]
+          .classList.remove("contact-selected");
+      }
+
+      if (id !== null) {
+        const element = document.getElementById(id);
+        if (element !== null) {
+          element.classList.add("contact-selected");
+        }
+      }
+      this.info = {};
+    },
+    async updateInfo() {
+      const response = await contactService.update(this.contact.phone, this.info);
+      const { data } = response;
+      const id = data.data._id;
+      this.chooseContact(id);
+      this.getData();
+      this.info = {};
+      this.$toast.open({
+        message: "Cập nhật thành công",
         type: "success",
         position: "top-right",
         duration: 1000,
@@ -107,31 +148,17 @@ export default {
     },
     changeStatusAddContact() {
       this.isAddContact = !this.isAddContact;
-      if(this.isAddContact){
-          document.getElementById("main").classList.add("blur-effect");
-      }else{
-            document.getElementById("main").classList.remove("blur-effect");
-    }
-              document.getElementById("addContactViewButton").disabled = this.isAddContact;
-              document.getElementById("deleteContactViewButton").disabled = this.isAddContact;
+      if (this.isAddContact) {
+        document.getElementById("main").classList.add("blur-effect");
+      } else {
+        document.getElementById("main").classList.remove("blur-effect");
+      }
+      document.getElementById("addContactViewButton").disabled = this.isAddContact;
+      document.getElementById("deleteContactViewButton").disabled = this.isAddContact;
 
-      
-    },
-    async chooseContact(id) {
-      const response = await contactService.getById(id);
-      window.localStorage.setItem("choosing",id);
-      const res = response.data;
-      this.contact = res.data;
-      if (
-          document.getElementsByClassName("contact-selected")[0] !== undefined
-        ) {
-          document
-            .getElementsByClassName("contact-selected")[0]
-            .classList.remove("contact-selected");
-        }
 
-        document.getElementById(id).classList.add("contact-selected");
     },
+
     async addContact(data) {
       await contactService.create(data);
       this.getData();
@@ -143,26 +170,26 @@ export default {
       });
     },
     async deleteAll() {
-        if(this.contacts.length > 0){
-            await contactService.deleteAll();
-      this.getData();
-      this.chooseContact("");
-      this.$toast.open({
-        message: "Xóa thành công",
-        type: "success",
-        position: "top-right",
-        duration: 1000,
-      });
-        }else{
-            this.$toast.open({
-        message: "Không có liên hệ nào để xóa!",
-        type: "error",
-        position: "top-right", 
-        duration: 1000,
+      if (this.contacts.length > 0) {
+        await contactService.deleteAll();
+        this.getData();
+        this.chooseContact("");
+        this.$toast.open({
+          message: "Xóa thành công",
+          type: "success",
+          position: "top-right",
+          duration: 1000,
+        });
+      } else {
+        this.$toast.open({
+          message: "Không có liên hệ nào để xóa!",
+          type: "error",
+          position: "top-right",
+          duration: 1000,
 
         })
-        }
-      
+      }
+
     },
 
     async getData() {
@@ -170,6 +197,7 @@ export default {
       const { data } = response;
       const xxx = data.data;
       this.contacts = xxx;
+      console.log(this.contacts);
     },
   },
   beforeMount() {
@@ -178,5 +206,19 @@ export default {
     this.chooseContact(id);
 
   },
+  computed: {
+    isSame: function () {
+      const root = this.contact;
+      const leaf = this.info;
+      if (Object.keys(leaf).length === 0) return true;
+      else {
+        // console.log(root.name);
+        if (root.name !== leaf.name) return false;
+        if (root.address !== leaf.address) return false;
+        if (root.email !== leaf.email) return false;
+      }
+      return true;
+    }
+  }
 };
 </script>
