@@ -40,16 +40,16 @@
   </div>
 </template>
 <script>
-import service from "../services/contact.service"
+import service from "../services/contact.service";
 export default {
   name: "SignIn",
   methods: {
     onSubmit: async (event) => {
       const username = event.target.username.value;
       const password = event.target.password.value;
-      const response = await service.signIn({username, password});
-      const {token} = response.data;
-      console.log(token);
+      const response = await service.signIn({ username, password });
+      const { token } = response.data;
+      localStorage.setItem("token", token);
     },
   },
 };
