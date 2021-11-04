@@ -23,10 +23,13 @@ module.exports =  {
             if (!user) {
                 res.status(404).send("User not found");
             }
-            const token = jwt.sign({id: user._id, username: user.username }, "phuoclong", {expiresIn: "1h"});
-            res.status(200).send({
+            if(user){
+                const token = jwt.sign({id: user._id, username: user.username }, "phuoclong", {expiresIn: "1h"});
+                res.status(200).send({
                 token
-            });
+                });
+            }
+            
         }
         );
 
