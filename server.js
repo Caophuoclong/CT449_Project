@@ -34,6 +34,8 @@ app.get("/", (req, res) => {
     res.status(200).send("Xin chao");
 })
 
+app.use("/api/auth", require("./routes/auth.route"));
+app.use(require("./middlewares/index.js"));
 app.use("/contact", require("./routes/contact.route"));
 app.use((req, res, next) => {
     next(new Error("Resource not found"));

@@ -1,8 +1,10 @@
 const Contact = require("../models/contact.model");
+const User = require("../models/user.model");
 
 module.exports = {
     create: async (req, res) => {
         const { name, email, phone, address } = req.body;
+        const {id} = req.user;
         try {
             const contact = new Contact({
                 name,
@@ -11,9 +13,13 @@ module.exports = {
                 address,
             });
             await contact.save();
+            const user = await User.findById(id);
+            console.log(user);
+            user.contactId.push(contact._id);
+            await user.save();
             res.json({
                 status: "success",
-                data: contact
+                data: user,
             });
 
         } catch (error) {
@@ -58,10 +64,12 @@ module.exports = {
         }
     },
     getAll: async (req, res) => {
-        const contacts = await Contact.find().sort({ create: -1 });
+        // const contacts = await Contact.find().sort({ create: -1 });
+        const { id } = req.user;
+        const {contactId} = await User.findById(id).populate("contactId");
         res.json({
             status: "success",
-            data: contacts
+            data: contactId,
         });
     },
 
