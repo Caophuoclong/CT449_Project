@@ -1,29 +1,35 @@
-import axiosClient from "../axiosClient/index";
+import {contactBook, auth} from "../axiosClient/index";
 
 export default {
     getAll: () => {
-        return axiosClient.get("/");
+        return contactBook.get("/");
     },
     getBy: (name, phone)=>{
-        return axiosClient.get(`/getby?${name?'name=' + name:""}${phone?'&phone=' + phone:""}`)
+        return contactBook.get(`/getby?${name?'name=' + name:""}${phone?'&phone=' + phone:""}`)
     },
     getById: (id) => {
-        return axiosClient.get(`/${id}`);
+        return contactBook.get(`/${id}`);
     },
     create: (contact) => {
-        return axiosClient.post("/create", contact);
+        return contactBook.post("/create", contact);
     },
     update: (phone,contact) => {
-        return axiosClient.put(`/update/${phone}`, contact);
+        return contactBook.put(`/update/${phone}`, contact);
     },
     favorite: (id)=>{
-        return axiosClient.put(`/favorite/${id}`);
+        return contactBook.put(`/favorite/${id}`);
     },
     delete: (phone) => {
-        return axiosClient.delete(`/delete/${phone}`);
+        return contactBook.delete(`/delete/${phone}`);
     },
     deleteAll: () => {
-        return axiosClient.delete("/delete");
+        return contactBook.delete("/delete");
+    },
+    signIn: (data)=>{
+        return auth.post("/signin", data);
+    },
+    signUp: data =>{
+        return auth.post("/signup", data);
     }
 
 }

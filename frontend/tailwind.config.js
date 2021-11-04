@@ -5,7 +5,13 @@ module.exports = {
     extend: {
       height: {
         "128": "32rem",
-      }
+      },
+      backgroundColor: theme =>({
+        "nord0": "#2E3440",
+        "nord1": "#3B4252",
+        "nord2": "#434C5E",
+        "nord3": "#4C566A",
+      })
     },
   },
   variants: {
