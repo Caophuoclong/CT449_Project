@@ -25,7 +25,9 @@ module.exports =  {
             if(user){
                 const token = jwt.sign({id: user._id, username: user.username }, "phuoclong", {expiresIn: "1h"});
                 res.status(200).send({
-                token
+                    id: user._id,
+                    username: user.username,
+                    token
                 });
             }
             
