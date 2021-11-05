@@ -5,11 +5,11 @@
             <font-awesome-icon size="3x" icon="id-badge"></font-awesome-icon>
         </div>
         <form>
-            <div class="flex justify-start my-8 border border-black p-2 rounded-2xl group">
+            <div class="flex justify-start my-8 border border-white p-2 rounded-2xl group">
                 <span class="ml-4 mr-8 text-3xl font-bold">Tên:</span>
                 <input
                     name="nameContact"
-                    class="text-3xl truncate outline-none w-2/3"
+                    class="text-3xl truncate outline-none w-2/3 bg-transparent"
                     :value="contact.name"
                     readonly
                 />
@@ -22,11 +22,11 @@
                     <font-awesome-icon size="3x" icon="edit"></font-awesome-icon>
                 </button>
             </div>
-            <div class="flex justify-start my-8 border border-black p-2 rounded-2xl group">
+            <div class="flex justify-start my-8 border border-white p-2 rounded-2xl group">
                 <span class="ml-4 mr-8 text-3xl font-bold">Email:</span>
                 <input
                     name="emailContact"
-                    class="text-3xl truncate outline-none w-2/3"
+                    class="text-3xl truncate outline-none w-2/3 bg-transparent"
                     :value="contact.email"
                     readonly
                 />
@@ -39,11 +39,11 @@
                     <font-awesome-icon size="3x" icon="edit"></font-awesome-icon>
                 </button>
             </div>
-            <div class="flex justify-start my-8 border border-black p-2 rounded-2xl group">
+            <div class="flex justify-start my-8 border border-white p-2 rounded-2xl group">
                 <span class="ml-4 mr-8 text-3xl font-bold">Địa chỉ:</span>
                 <input
                     name="addressContact"
-                    class="text-3xl truncate outline-none w-2/3"
+                    class="text-3xl truncate outline-none w-2/3 bg-transparent"
                     :value="contact.address"
                     readonly
                 />
@@ -56,11 +56,11 @@
                     <font-awesome-icon size="3x" icon="edit"></font-awesome-icon>
                 </button>
             </div>
-            <div class="flex justify-start my-8 border border-black p-2 rounded-2xl">
+            <div class="flex justify-start my-8 border border-white p-2 rounded-2xl">
                 <span class="ml-4 mr-8 text-3xl font-bold">Số điện thoại:</span>
                 <span class="text-3xl truncate" :title="contact.phone">{{ contact.phone }}</span>
             </div>
-            <div class="flex justify-start my-8 items-center border border-black p-2 rounded-2xl">
+            <div class="flex justify-start my-8 items-center border border-white p-2 rounded-2xl">
                 <span class="ml-4 mr-8 text-3xl font-bold">Liên lạc yêu thích:</span>
                 <font-awesome-icon
                     v-if="contact.favorite"

@@ -41,15 +41,21 @@
 </template>
 <script>
 import service from "../services/contact.service";
+import router from "../routers/index"
+import store from "../store/index"
 export default {
   name: "SignIn",
   methods: {
     onSubmit: async (event) => {
       const username = event.target.username.value;
       const password = event.target.password.value;
-      const response = await service.signIn({ username, password });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
+      const data = {username, password};
+      const response = await store.dispatch("login", data); 
+
+      if(response){
+        router.push("/");
+      }
+
     },
   },
 };

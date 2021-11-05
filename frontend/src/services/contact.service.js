@@ -1,5 +1,13 @@
 import {contactBook, auth} from "../axiosClient/index";
-
+import store from "../store/index";
+contactBook.interceptors.request.use(config=>{
+    const user = store.getters.loggedInUser;
+    if(user && user.token){
+        config.headers.Authorization = `${user.token}`;
+    }
+        
+    return config;
+})
 export default {
     getAll: () => {
         return contactBook.get("/");

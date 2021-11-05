@@ -5,7 +5,7 @@
       <font-awesome-icon size="3x" icon="users"></font-awesome-icon>
     </div>
     <div
-      class="text-2xl font-bold m-4 border-2 p-4 border-gray-300 rounded-2xl cursor-pointer active:bg-blue-300 select-none truncate relative group"
+      class="text-2xl font-bold m-4 border-2 p-4 border-gray-300 rounded-2xl cursor-pointer active:bg-white select-none truncate relative group text-black"
       v-on:click="onClick"
       v-for="(contact, index) in contacts"
       :key="index"

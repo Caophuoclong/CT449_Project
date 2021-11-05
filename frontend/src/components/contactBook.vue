@@ -1,5 +1,6 @@
 <template>
-  <div id="xinchao" class="h-full w-full relative">
+  <div id="xinchao" class="h-full w-full relative bg-nord1 text-white">
+    <button class="absolute top-2 right-10 text-3xl border-2 border-white ring-white rounded-3xl py-2 px-4 text-white bg-nord3" @click="handleLogOut">Log out</button>
     <FormAdd v-if="isAddContact" @changeStatus="changeStatusAddContact" @addContact="addContact" />
     <div id="main">
       <SearchBox @xinchao="handleSubmit" />
@@ -39,6 +40,8 @@ import SearchBox from "./serachBox.vue";
 import FormAdd from "./addContact.vue";
 import DetailContact from "./detailContact.vue";
 import ContactView from "./contactView.vue";
+import store from "../store/index";
+import router from "../routers/index";
 export default {
   name: "index",
   components: {
@@ -56,6 +59,10 @@ export default {
     };
   },
   methods: {
+    handleLogOut(){
+      store.dispatch("logout");
+      router.push("/signin");
+    },
     async handleSubmit(event) {
       const response = await contactService.getBy(event, null);
       const res = response.data;

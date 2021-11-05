@@ -1,8 +1,9 @@
 import axios from "axios"
+import store from "../store/index"
 const contactBook = axios.create({
     baseURL: "https://bookcontact.herokuapp.com/contact/",
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
 })
 const auth = axios.create({
