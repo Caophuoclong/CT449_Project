@@ -14,7 +14,6 @@ module.exports = {
             });
             await contact.save();
             const user = await User.findById(id);
-            console.log(user);
             user.contactId.push(contact._id);
             await user.save();
             res.json({
@@ -66,7 +65,7 @@ module.exports = {
     getAll: async (req, res) => {
         // const contacts = await Contact.find().sort({ create: -1 });
         const { id } = req.user;
-        const {contactId} = await User.findById(id).populate("contactId");
+        const { contactId } = await User.findById(id).populate("contactId");
         res.json({
             status: "success",
             data: contactId,

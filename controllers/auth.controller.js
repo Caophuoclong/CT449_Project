@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 module.exports =  {
     signUp: function(req, res) {
         const {username, email, password} = req.body;
-        console.log(req.body);
         const newUser = new User({username, email, password});
         newUser.save(function(err) {
             if (err) {
