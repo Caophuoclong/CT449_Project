@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { encrypt } = require("../scripts/hashPassword");
-const config = require("../config");
 const casual = require("casual");
 const {SignToken, SignRefreshToken} = require("../scripts/endCode");
 const Schema = mongoose.Schema;

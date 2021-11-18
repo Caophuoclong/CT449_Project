@@ -17,7 +17,7 @@ module.exports = {
         const response = await userFn.signUp({username, password, email});
         console.log(response);
         if(response.status === 200){
-            res.json(response.data);
+            res.json(response);
         }else{
             next(new HandleError(response.message, response.status));
         }

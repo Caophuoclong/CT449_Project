@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --detectOpenHandles",
-    "dev": "nodemon server.js",
+    "dev": "cp ./env/dev.env .env && nodemon server.js",
     "start": "nodemon server.js"
   },
   "repository": {
