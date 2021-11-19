@@ -21,12 +21,17 @@ mongoose.connect(mongo_url, {
 const corsOption = {
     origin: '*',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    
+
 
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOption));
+
+app.use(cors({
+    origin: '*'
+}))
+
+
 
 app.get("/", (req, res) => {
     res.send("Hello world");
