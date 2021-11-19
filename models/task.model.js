@@ -22,8 +22,9 @@ const schema = new Schema({
     },
     status:{
         // complete or none
-        type: Boolean,
-        default: false,
+        type: String,
+        enum: ["prepare","pending", "complete"],
+        default: "prepare",
     },
     owner: {
         type: Schema.Types.ObjectId,
@@ -50,11 +51,12 @@ const taskFn = {
             const newTask = new taskModel({
                 title: data.title,
                 content: data.content,
-                endAt: data.endAt,
+                endAt: data.end,
+                createAt: data.start,
                 owner: data.owner
             });
             await newTask.save();
-            return {status: 200, message: 'Create task success'};
+            return {status: 200, message: 'Create task success', id: newTask._id};
         }catch(error){
             return {status: 500, message: 'Create task fail'};
         }
@@ -64,7 +66,8 @@ const taskFn = {
             const response = await taskModel.findOneAndUpdate({_id: data.id, owner: data.owner}, {
                 title: data.title,
                 content: data.content,
-                endAt: data.endAt,
+                endAt: data.end,
+                createAt: data.start,
                 level: data.level,
                 status: data.status,
             },{

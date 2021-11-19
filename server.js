@@ -19,7 +19,11 @@ mongoose.connect(mongo_url, {
     console.log("MongoDB Connected");
 });
 
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: "*",
+    optionsSuccessStatus: 200,
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
