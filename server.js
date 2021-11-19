@@ -22,13 +22,12 @@ const corsOption = {
     origin: '*',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 
-
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-    origin: '*'
+    origin: 'http://localhost:3000'
 }))
 
 
