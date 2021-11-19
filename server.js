@@ -20,6 +20,9 @@ mongoose.connect(mongo_url, {
 
 const corsOption = {
     origin: '*',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    
+
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
