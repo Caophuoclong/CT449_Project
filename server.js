@@ -7,7 +7,6 @@ const HandleError = require("./handleError");
 const middleware = require("./middleware");
 const { port } = require("./configs/app");
 const {mongo_url} = require("./configs/database");
-const corsOptions = require("./configs/cors");
 const app = express();
 const server = http.createServer(app);
 // in this app use mongodb atlas if you use mongodb local 
@@ -22,9 +21,10 @@ mongoose.connect(mongo_url, {
 const corsOption = {
     origin: '*',
 }
-app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOption));
+
 app.get("/", (req, res) => {
     res.send("Hello world");
 })
