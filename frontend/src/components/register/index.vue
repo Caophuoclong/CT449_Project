@@ -152,6 +152,7 @@ import axios from "axios";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { HalfCircleSpinner } from "epic-spinners";
+
 export default {
   components: {
     Form,
@@ -203,20 +204,22 @@ export default {
 
       const { username, password, email } = value;
       try{
-        const response = await axios.post("http://localhost:5000/auth/register", {
+        const response = await axios.post("https://ct449-project.herokuapp.com/auth/register", {
         username,
         password,
         email,
       });
+      console.log(response);
       this.isLoading = false;
       formRegister.classList.remove("blur-effect");
       const status = response.status;
       if(status === 200){
-        this.$toast.success("Successfully registered!");
+        this.$swal("Registered successfully");
         this.$router.push("/login");
       }
       }catch(error){
         this.isLoading = false;
+        console.log(error);
         formRegister.classList.remove("blur-effect");
         alert("Username already exits!")
       }

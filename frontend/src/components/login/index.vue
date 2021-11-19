@@ -146,7 +146,7 @@ export default {
       this.isLoading = true;
       loginForm.classList.add("blur-effect");
       try {
-        const response = await axios.post("http://localhost:5000/auth/login", {
+        const response = await axios.post("http://localhost:5004/auth/login", {
           username,
           password,
         });

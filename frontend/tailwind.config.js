@@ -18,6 +18,8 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+      display: ["group-hover"],
+      ringWidth: ["hover", "focus", "active", "group-focus"],
     },
   },
   plugins: [],

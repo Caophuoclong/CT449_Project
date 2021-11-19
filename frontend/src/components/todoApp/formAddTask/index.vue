@@ -12,19 +12,19 @@
       rounded-3xl
       bg-white
     "
-    @submit="onSubmit"
+    @submit="handleSubmitForm"
   >
     <div class="w-8 h-8 ml-auto mr-4 text-3xl font-bold cursor-pointer active:bg-gray-500 rounded-3xl select-none text-center" @click="handleHideForm" title="Toogle Add Task!">X</div>
 
     <p class="w-max mx-auto text-3xl font-bold mb-4">Add new Task</p>
-    <div className="mx-20 flex">
+    <div class="mx-20 flex">
       <div class="w-1/2">
         <label htmlFor="start" class="text-2xl font-bold">Start Date</label>
         <div class="break"></div>
         <Field
           id="start"
           name="start"
-          type="date"
+          type="datetime-local"
           class="
             border border-gray-400
             w-full
@@ -43,7 +43,7 @@
         <Field
           id="end"
           name="end"
-          type="date"
+          type="datetime-local"
           class="
             border border-gray-400
             w-full
@@ -59,11 +59,11 @@
     </div>
     <div className="mx-20 flex">
       <div class="w-1/2">
-        <label htmlFor="status" class="text-2xl font-bold">Level</label>
+        <label htmlFor="level" class="text-2xl font-bold">Level</label>
         <div class="break"></div>
         <Field
-          id="status"
-          name="status"
+          id="level"
+          name="level"
           as="select"
          class="
             border border-gray-400
@@ -107,8 +107,8 @@
       <br />
       <Field
         id="content"
-        name="content"
         type="text"
+        name="content"
         class="
           border border-gray-400
           w-full
@@ -122,7 +122,7 @@
       />
     </div>
     <div class="w-max mx-auto">
-        <button class="w-max text-3xl py-2 px-4 border border-black rounded-xl mx-auto">Submit</button>
+        <button type="submit"  class="w-max text-3xl py-2 px-4 border border-black rounded-xl mx-auto">Submit</button>
     </div>
   </Form>
 </template>
@@ -130,10 +130,18 @@
 import { Field, Form } from "vee-validate";
 export default {
   name: "formAddTask",
-  props:{
-      handleHideForm: Function,
-      onSubmit: Function,
-
+  components: {
+    Field,
+    Form,
+  },
+  methods:{
+    handleHideForm(){
+      console.log("xin chao");
+      this.$emit("handle-hide-form");
+    },
+    handleSubmitForm(values){
+      this.$emit("handle-submit-form", values);
+    },
   },
   components: {
     Field,

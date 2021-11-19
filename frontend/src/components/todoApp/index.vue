@@ -1,4 +1,17 @@
 <template>
+<HalfCircleSpinner
+      :animation-duration="1000"
+      :size="60"
+      color="#ff1d5e"
+      class="
+        absolute
+        top-1/2
+        left-1/2
+        transform
+        -translate-x-1/2 -translate-y-1/2
+      "
+      v-if="isLoading"
+    />
   <div id="container" class="w-full mx-auto p-4 h-full relative flex">
     <div id="main" class="w-full flex py-2 flex-wrap">
       <NavBar
@@ -9,8 +22,8 @@
       />
       <div class="break"></div>
       <div class="w-full flex h-90p my-4 shadow-sm rounded-3xl">
-        <Todos :todos="todos" :now="now" />
-        <Inprogress :inProgress="inProgress" :now="now" />
+        <Todos @change-status="changeStatus" :todos="todoList" :now="now" />
+        <Inprogress @change-status="changeStatus1" :inProgress="inProgress" :now="now" />
         <DoneTask :done="done" />
       </div>
     </div>
@@ -18,8 +31,8 @@
   </div>
   <FormAddTask
     v-if="isHideForm"
-    :onSubmit="handleSubmitForm"
-    :handleHideForm="toggleForm"
+    @handle-submit-form="handleSubmitForm"
+    @handle-hide-form="toggleForm"
   />
 </template>
 <script>
@@ -30,7 +43,8 @@ import DoneTask from "./done/index.vue";
 import UserFrame from "./userFrame/index.vue";
 import NavBar from "./navBar/index.vue";
 import FormAddTask from "./formAddTask/index.vue";
-import axios from "axios";
+import axiosClient from "../../axiosClient";
+import refreshToken from "../../lib/refreshToken";
 export default {
   name: "TodoApp",
   components: {
@@ -43,74 +57,36 @@ export default {
   },
   data() {
     const isHide = true;
+    const todo = {};
+
     return {
       isHide,
       username: "",
       isHideForm: false,
-      todos: [
-        {
-          id: 1,
-          title: "xin chao",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit in unde modi perferendis. Libero mollitia doloremque voluptatibus facilis.",
-          level: "high",
-        },
-        {
-          id: 2,
-          title: "xin chao",
-          isDone: 0,
-          level: "medium",
-        },
+      todoList: [
+        
       ],
       inProgress: [
-        {
-          id: 1,
-          title: "Dang lam",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit.",
-          level: "high",
-        },
-        {
-          id: 1,
-          title: "Dang lam",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit.",
-          level: "high",
-        },
-        {
-          id: 1,
-          title: "Dang lam",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit.",
-          level: "high",
-        },
-        {
-          id: 1,
-          title: "Dang lam",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit.",
-          level: "high",
-        },
+        
       ],
       done: [
-        {
-          id: 1,
-          title: "Da xong",
-          isDone: 1,
-          content:
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores neque corporis explicabo dolorum sequi, nobis exercitationem consequatur quod voluptatum excepturi suscipit.",
-          level: "high",
-        },
+        
       ],
-      levels: ["low", "medium", "high"],
+      todo,
+      isLoading: false,
+      showEdit: false,
     };
   },
   methods: {
+    changeStatus(todo){
+      console.log(todo);
+      this.inProgress.push(todo);
+    },
+    changeStatus1(todo){
+      console.log(todo);
+      this.done.push(todo);
+    },
+
     toggleInfo() {
       this.isHide = !this.isHide;
     },
@@ -123,12 +99,97 @@ export default {
         container.classList.remove("blur-effect");
       }
     },
-    handleSubmitForm(value) {
+    async handleSubmitForm(value) {
+      console.log(value);
       const container = document.getElementById("container");
       this.isHideForm = false;
       container.classList.remove("blur-effect");
-      console.log(value);
+      const token = window.localStorage.getItem("token");
+     axiosClient.post("/api/task/create", value,{
+        headers:{
+          Authorization: token
+        }
+      }).then(response=>{
+        const {data}= response;
+        const todo = {
+          ...value,
+          id: data.id,
+          createAt: value.start,
+          endAt: value.end,
+        }
+        console.log(todo);
+        this.todoList.push(todo)
+      }).catch(error=>{
+        if(error.status === 401){
+          refreshToken();
+        }else{
+          this.$swal.fire({
+            title: "Error",
+            content: "Something went wrong, please try again!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        }
+      });
+      
+      
     },
+    
+    getUser(token){
+        axiosClient.get("/user",{
+            headers: { Authorization: token },
+        }).then((response) => {
+            const { data } = response;
+            this.username = data.username;
+            console.log(data);
+          }).catch(error=>{
+            const reFreshToken = window.localStorage.getItem("refreshToken");
+            error.response.status === 401 ?  
+              axiosClient
+                .get("/refreshToken", {
+                  headers: { Authorization: reFreshToken },
+                })
+                .then((res) => {
+                  const { token } = res.data;
+                  window.localStorage.setItem("token", token);
+                }) : console.log(error);
+          });
+        },
+    getAllTask(token){
+      axiosClient.get("/api/task/getAll",{
+        headers:{
+          Authorization: token
+        }
+      }).then((response) => {
+          const { data } = response;
+          const todos = data.data;      
+          todos.map(value=>{
+            if(value.status === "prepare"){
+              this.todoList.push({
+                ...value,
+                createAt: moment(value.createAt).utc().format("YYYY-MM-DDTHH:mm"),
+                endAt: moment(value.endAt).utc().format("YYYY-MM-DDTHH:mm"),
+              });
+            }else if(value.status === "pending"){
+              this.inProgress.push({
+                ...value,
+                createAt: moment(value.createAt).utc().format("YYYY-MM-DDTHH:mm"),
+                endAt: moment(value.endAt).utc().format("YYYY-MM-DDTHH:mm"),
+              });
+            } else{
+              this.done.push({
+                ...value,
+                createAt: moment(value.createAt).utc().format("YYYY-MM-DDTHH:mm"),
+                endAt: moment(value.endAt).utc().format("YYYY-MM-DDTHH:mm"),
+              });
+            }
+          })
+        });
+
+        
+
+    }
   },
   watch: {},
   computed: {
@@ -140,33 +201,9 @@ export default {
     const token = window.localStorage.getItem("token");
     if (token === null) {
       this.$router.push("/login");
-    } else {
-      try {
-        const response = axios
-          .get("http://localhost:5000/user", {
-            headers: { Authorization: token },
-          })
-          .then((response) => {
-            const { data } = response;
-            console.log(data);
-            if (data.status === 403) {
-              const reFreshToekn = window.localStorage.getItem("refreshToken");
-              axios
-                .get("http://localhost:5000/refreshToken", {
-                  headers: { Authorization: reFreshToekn },
-                })
-                .then((res) => {
-                  const { token } = res.data;
-                  window.localStorage.setItem("token", token);
-                });
-            } else {
-              this.username = data.username;
-            }
-          });
-      } catch (error) {
-        this.$router.push("/login");
-      }
-    }
+    } 
+    this.getUser(token);
+    this.getAllTask(token)
   },
 };
 </script>
