@@ -21,8 +21,6 @@ mongoose.connect(mongo_url, {
 
 app.use(cors({
     origin: "*",
-    optionsSuccessStatus: 200,
-    credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
