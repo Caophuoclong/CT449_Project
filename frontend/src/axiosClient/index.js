@@ -1,9 +1,8 @@
 import axios from "axios";
 import queryString from "query-string";
-const url = "http://localhost:5004"
+const url = "http://localhost:5001"
 const axiosClient = axios.create({
     baseURL: url,
-    withCredentials: false,
     headers: {
         "Content-Type": "application/json",
     },

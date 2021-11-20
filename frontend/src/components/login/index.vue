@@ -108,6 +108,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { HalfCircleSpinner } from "epic-spinners";
 import axios from "axios";
+import axiosClient from "../../axiosClient";
 export default {
   name: "Login",
 
@@ -146,7 +147,7 @@ export default {
       this.isLoading = true;
       loginForm.classList.add("blur-effect");
       try {
-        const response = await axios.post("http://localhost:5004/auth/login", {
+        const response = await axiosClient.post("/auth/login", {
           username,
           password,
         });

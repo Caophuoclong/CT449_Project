@@ -152,6 +152,7 @@ import axios from "axios";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { HalfCircleSpinner } from "epic-spinners";
+import axiosClient from "../../axiosClient";
 
 export default {
   components: {
@@ -204,7 +205,7 @@ export default {
 
       const { username, password, email } = value;
       try{
-        const response = await axios.post("https://ct449-project.herokuapp.com/auth/register", {
+        const response = await axiosClient.post("/auth/register", {
         username,
         password,
         email,
