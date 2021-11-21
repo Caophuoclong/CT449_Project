@@ -19,18 +19,30 @@ const schema = new Schema({
     required: true,
   },
   profile: {
-    lastname: {
+    avatar: {
       type: String,
+      default: "https://i.pravatar.cc/300",
     },
-    firstname: {
+    lastName: {
       type: String,
+      default: "Name"
     },
-    phone: {
+    firstName: {
       type: String,
+      default: "No"
     },
-    dob: {
+    phoneNumber: {
+      type: String,
+      default: "0xxxxxxxx"
+    },
+    dateOfBirth: {
       type: Date,
+      default: new Date()
     },
+    firstTime:{
+      type: Boolean,
+      default: true
+    }
   },
   tasks:[
     {
@@ -139,18 +151,19 @@ const userFn = {
       return { status: 403, message: "User not found!" };
     }
   },
-  updateUser: async (username, data) => {
-    const { email, firstname, lastname, phone, dob } = data;
+  updateUser: async (id, data) => {
+    const { email, firstName, lastName, phoneNumber, dateOfBirth } = data;
     try{
-      const userData = await user.findOneAndUpdate(
-        { username },
+      const userData = await user.findByIdAndUpdate(
+        id,
         {
           email,
           profile: {
-            firstname,
-            lastname,
-            phone,
-            dob,
+            firstName,
+            lastName,
+            phoneNumber,
+            dateOfBirth,
+            firstTime: false
           },
         },
         {

@@ -16,8 +16,8 @@ module.exports = {
 
     },
     updateUser: async (req, res, next) => {
-        const {username} = req.user;
-        const response = await userFn.updateUser(username, req.body);
+        const {id} = req.user;
+        const response = await userFn.updateUser(id, req.body);
         if(response.status === 200){
             res.json({
                 message: "User updated successfully!"
@@ -34,5 +34,11 @@ module.exports = {
         }else{
             next(new HandleError(response.message, response.status));
         }
+    },
+    changeAvatar: async (req, res, next) => {
+        const {id} = req.user;
+        const {data} = req.body;
+        console.log(data);
+        res.json("xin chao");
     }
 }
