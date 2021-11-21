@@ -13,7 +13,7 @@
       v-if="isLoading"
     />
   <div id="container" class="w-full mx-auto p-4 h-full relative flex">
-    <div id="main" class="w-full flex py-2 flex-wrap">
+    <div id="main" class="w-full flex flex-wrap h-full">
       <NavBar
         :handleHideForm="toggleForm"
         :handleHide="toggleInfo"
@@ -21,13 +21,13 @@
         :isHideForm="isHideForm"
       />
       <div class="break"></div>
-      <div class="w-full flex h-90p my-4 shadow-sm rounded-3xl">
+      <div class="w-full flex h-90p py-4 shadow-xl rounded-3xl" style="height: 93%">
         <Todos @change-status="changeStatus" :todos="todoList" :now="now" />
         <Inprogress @change-status="changeStatus1" :inProgress="inProgress" :now="now" />
         <DoneTask :done="done" />
       </div>
     </div>
-    <UserFrame v-if="!isHide" :username="username" />
+    <UserFrame v-if="!isHide" :user="user" @upload-file="uploadImage" />
   </div>
   <FormAddTask
     v-if="isHideForm"
@@ -45,6 +45,7 @@ import NavBar from "./navBar/index.vue";
 import FormAddTask from "./formAddTask/index.vue";
 import axiosClient from "../../axiosClient";
 import refreshToken from "../../lib/refreshToken";
+import { getStorage, ref, uploadBytes  } from "firebase/storage";
 export default {
   name: "TodoApp",
   components: {
@@ -55,6 +56,9 @@ export default {
     NavBar,
     FormAddTask,
   },
+  props:{
+    app
+  },
   data() {
     const isHide = true;
     const todo = {};
@@ -63,6 +67,7 @@ export default {
       isHide,
       username: "",
       isHideForm: false,
+      user: "",
       todoList: [
         
       ],
@@ -85,6 +90,19 @@ export default {
     changeStatus1(todo){
       console.log(todo);
       this.done.push(todo);
+    },
+    uploadImage(img){
+      const app = this.$props.app;
+      const storage = getStorage(app);    
+      console.log(storage.ref())
+      const storageRef = ref(storage);
+      uploadBytes(storageRef, img).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        console.log(snapshot);
+      }).catch((error) => {
+        console.log(error);
+      });     
+
     },
 
     toggleInfo() {
@@ -141,8 +159,8 @@ export default {
             headers: { Authorization: token },
         }).then((response) => {
             const { data } = response;
-            this.username = data.username;
-            console.log(data);
+            this.user = data;
+            console.log(this.user);
           }).catch(error=>{
             const reFreshToken = window.localStorage.getItem("refreshToken");
             error.response.status === 401 ?  
@@ -164,6 +182,7 @@ export default {
       }).then((response) => {
           const { data } = response;
           const todos = data.data;      
+          console.log(todos);
           todos.map(value=>{
             if(value.status === "prepare"){
               this.todoList.push({
@@ -198,6 +217,7 @@ export default {
     },
   },
   created() {
+    console.log(this.$props.app);
     const token = window.localStorage.getItem("token");
     if (token === null) {
       this.$router.push("/login");

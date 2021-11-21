@@ -1,6 +1,6 @@
 import axios from "axios";
 import queryString from "query-string";
-const url = "http://localhost:5001"
+const url = "http://localhost:5004"
 const axiosClient = axios.create({
     baseURL: url,
     headers: {
