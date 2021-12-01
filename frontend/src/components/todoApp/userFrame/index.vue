@@ -191,7 +191,7 @@ export default {
     logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
-      this.$route.push("/login");
+      this.$router.push("/login");
     },
     editInfo() {
       const inputElement = document.querySelectorAll("input");
